@@ -53,17 +53,20 @@ async function sendMessage() {
             buttonIcon.classList.remove('fas', 'fa-spinner', 'fa-pulse');
         }, 2000);
         return;
+    }else if (message === 'test'){
+
     }
     appendMessage('user', message);
     userInput.value = '';
 
 const selectedSrcId = srcIdsData[srcIdSelect.value];
-// console.log('===========Source ID:', selectedSrcId);
+console.log('===========Source ID:', selectedSrcId);
 setTimeout(async () => {
     try {
         const response = await fetch('https://api.chatpdf.com/v1/chats/message', {
             method: 'POST',
             headers: {
+                'x-api-key': 'sec_b0bihQqZZ6GG1SBBhFyX3DzYNDcqX3ST',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({"referenceSources": true, "sourceId": selectedSrcId, "messages":[{"role":"user","content":message}]})
