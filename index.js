@@ -4,6 +4,33 @@ const chatLog = document.getElementById('chat-log'),
     buttonIcon = document.getElementById('button-icon'),
     info = document.querySelector('.info');
 
+const srcIdsData = {
+    1: 'src_f3mYWvizfofE0glcc9Ytn',
+    2: 'src_h4pJkwU8el0V7xJbvlJlM',
+    3: 'src_wWzuif7i20842zGQn5w7K',
+    4: 'src_Rwu5zONlJxZk0LocahJrn',
+    5: 'src_Pshn9Pp0vsbntFwEktwmw',
+    6: 'src_pMH9zsaLARTiYIdPQ6GyK',
+    7: 'src_qWYDKuf9WOkIdilBjBj2X',
+    8: 'src_k1bI9zHWefhkv1k5rxtVZ',
+    9: 'src_tMuSoyRTDRtnGJWAGoPtC',
+    10: 'src_wWFMzTLRSp1yddp0k94Hr',
+    11: 'src_YGwwRj0kz3Tojgf3mFel0',
+    12: 'src_6cSb2R50WKfjTuBnfVW99',
+    13: 'src_iKxpu0ZxRtd5n7pdotJL2',
+};
+
+const srcIdSelect = document.getElementById('src-id');
+srcIdSelect.addEventListener('change', () => {
+    // Update the sourceId based on the selected option
+    const selectedSrcId = srcIdsData[srcIdSelect.value];
+    // updateSourceId(selectedSrcId);
+});
+
+function updateSourceId(selectedSrcId) {
+    console.log('Selected Source ID:', selectedSrcId);
+}
+
 sendButton.addEventListener('click', sendMessage);
 userInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
@@ -30,15 +57,16 @@ async function sendMessage() {
     appendMessage('user', message);
     userInput.value = '';
 
+const selectedSrcId = srcIdsData[srcIdSelect.value];
+// console.log('===========Source ID:', selectedSrcId);
 setTimeout(async () => {
     try {
         const response = await fetch('https://api.chatpdf.com/v1/chats/message', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-api-key': 'sec_b0bihQqZZ6GG1SBBhFyX3DzYNDcqX3ST',
             },
-            body: JSON.stringify({"referenceSources": true, "sourceId": "src_f3mYWvizfofE0glcc9Ytn", "messages":[{"role":"user","content":message}]})
+            body: JSON.stringify({"referenceSources": true, "sourceId": selectedSrcId, "messages":[{"role":"user","content":message}]})
         });
 
         const result = await response.json();
