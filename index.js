@@ -17,7 +17,7 @@ async function sendMessage() {
     if (message === '') {
         return;
     }
-    else if (message === 'developer') {
+    else if (message === 'Hi' || message === 'hi' || message === 'Hello' || message === 'hello') {
         userInput.value = '';
         appendMessage('user', message);
         setTimeout(async () => {
