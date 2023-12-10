@@ -27,11 +27,11 @@ fileUploadInput.addEventListener('change', handleFileUpload); // Add this line
 
 srcIdSelect.addEventListener('change', () => {
     const selectedSrcId = srcIdsData[srcIdSelect.value];
-    updateSourceId(selectedSrcId);
+    // updateSourceId(selectedSrcId);
 });
 
 function updateSourceId(selectedSrcId) {
-    console.log('Selected Source ID:', selectedSrcId);
+    // console.log('Selected Source ID:', selectedSrcId);
 }
 
 sendButton.addEventListener('click', sendMessage);
@@ -56,7 +56,12 @@ async function sendMessage() {
         }, 2000);
         return;
     } else if (message === 'test') {
-        // Handle 'test' message
+        userInput.value = '';
+        appendMessage('user', message);
+        setTimeout(async () => {    
+            appendMessage('bot', 'Unauthorized Message');
+        }, 2000);
+        return;
     }
 
     appendMessage('user', message);
@@ -128,25 +133,45 @@ function appendMessage(sender, message) {
     chatLog.scrollTo = chatLog.scrollHeight;
 }
 
+
 function handleFileUpload(event) {
-    const uploadedFile = event.target.files[0];
-    const fileReader = new FileReader();
+    const srcId = Object.keys(srcIdsData).length + 1;
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+    let userSrcId = '';
+    setTimeout(async () => {
+            try {
+                const response = await fetch('https://api.chatpdf.com/v1/sources/add-file', {
+                    method: 'POST',
+                    headers: {
+                        'x-api-key': 'sec_b0bihQqZZ6GG1SBBhFyX3DzYNDcqX3ST',
+                    },
+                    body: formData,
+                });
+    
+                const result = await response.json();
+                // console.log(response);
+                // console.log(result);
+                userSrcId = result.sourceId;
+            } catch (err) {
+                console.error(err);
+                if (err.name === 'TypeError') {
+                    appendMessage('bot', 'Error: Check Your API Key!');
+                }
+            }
+        }, 2000);
 
-    fileReader.onload = function (e) {
-        const srcId = Object.keys(srcIdsData).length + 1;
-        const optionText = 'Your Current Plan';
+    const optionText = 'Your Current Plan';
 
-        // To be implemented to get the actual src_id
-        srcIdsData[srcId] = 'your_generated_src_id'; 
+    setTimeout(async () => {
+        srcIdsData[srcId] = userSrcId;
+        await addOptionToDropdown(srcId, optionText);
+    }, 5000);
 
-        addOptionToDropdown(srcId, optionText); 
-
-        console.log('Custom Source ID:', srcId);
-
-        console.log('Uploaded File:', uploadedFile);
-    };
-
-    fileReader.readAsDataURL(uploadedFile);
+    // console.log('Custom Source ID:', srcId);
+    // console.log('Uploaded File:', file);
+    // console.log(srcIdsData);
 }
 
 function addOptionToDropdown(srcId, optionText) {
@@ -154,6 +179,5 @@ function addOptionToDropdown(srcId, optionText) {
     newOption.value = srcId;
     newOption.text = optionText;
     srcIdSelect.add(newOption);
-
     srcIdSelect.value = srcId;
 }
