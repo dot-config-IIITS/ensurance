@@ -21,10 +21,13 @@ const srcIdsData = {
 };
 
 const srcIdSelect = document.getElementById('src-id');
+const fileUploadInput = document.getElementById('pdf-upload'); // Add this line
+
+fileUploadInput.addEventListener('change', handleFileUpload); // Add this line
+
 srcIdSelect.addEventListener('change', () => {
-    // Update the sourceId based on the selected option
     const selectedSrcId = srcIdsData[srcIdSelect.value];
-    // updateSourceId(selectedSrcId);
+    updateSourceId(selectedSrcId);
 });
 
 function updateSourceId(selectedSrcId) {
@@ -43,8 +46,7 @@ async function sendMessage() {
 
     if (message === '') {
         return;
-    }
-    else if (message === 'Hi' || message === 'hi' || message === 'Hello' || message === 'hello') {
+    } else if (message === 'Hi' || message === 'hi' || message === 'Hello' || message === 'hello') {
         userInput.value = '';
         appendMessage('user', message);
         setTimeout(async () => {
@@ -53,45 +55,51 @@ async function sendMessage() {
             buttonIcon.classList.remove('fas', 'fa-spinner', 'fa-pulse');
         }, 2000);
         return;
-    }else if (message === 'test'){
-
+    } else if (message === 'test') {
+        // Handle 'test' message
     }
+
     appendMessage('user', message);
     userInput.value = '';
 
-const selectedSrcId = srcIdsData[srcIdSelect.value];
-console.log('===========Source ID:', selectedSrcId);
-setTimeout(async () => {
-    try {
-        const response = await fetch('https://api.chatpdf.com/v1/chats/message', {
-            method: 'POST',
-            headers: {
-                'x-api-key': 'sec_b0bihQqZZ6GG1SBBhFyX3DzYNDcqX3ST',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({"referenceSources": true, "sourceId": selectedSrcId, "messages":[{"role":"user","content":message}]})
-        });
+    const selectedSrcId = srcIdsData[srcIdSelect.value];
+    // console.log('===========Source ID:', selectedSrcId);
+    setTimeout(async () => {
+        try {
+            const response = await fetch('https://api.chatpdf.com/v1/chats/message', {
+                method: 'POST',
+                headers: {
+                    'x-api-key': 'sec_b0bihQqZZ6GG1SBBhFyX3DzYNDcqX3ST',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "referenceSources": true,
+                    "sourceId": selectedSrcId,
+                    "messages": [{
+                        "role": "user",
+                        "content": message
+                    }]
+                })
+            });
 
-        const result = await response.json();
-        // console.log(result);
-        appendMessage('bot', result.content);
-        buttonIcon.classList.add('fa-solid', 'fa-paper-plane');
-        buttonIcon.classList.remove('fas', 'fa-spinner', 'fa-pulse');
-    } catch (err) {
-        console.error(err);
-        if (err.name === 'TypeError') {
-            appendMessage('bot', 'Error: Check Your API Key!');
+            const result = await response.json();
+            appendMessage('bot', result.content);
             buttonIcon.classList.add('fa-solid', 'fa-paper-plane');
             buttonIcon.classList.remove('fas', 'fa-spinner', 'fa-pulse');
+        } catch (err) {
+            console.error(err);
+            if (err.name === 'TypeError') {
+                appendMessage('bot', 'Error: Check Your API Key!');
+                buttonIcon.classList.add('fa-solid', 'fa-paper-plane');
+                buttonIcon.classList.remove('fas', 'fa-spinner', 'fa-pulse');
+            }
         }
-    }
-}, 2000);
-return;
+    }, 2000);
+    return;
 }
 
 function appendMessage(sender, message) {
     info.style.display = "none";
-    // change send button icon to loading using fontawesome
     buttonIcon.classList.remove('fa-solid', 'fa-paper-plane');
     buttonIcon.classList.add('fas', 'fa-spinner', 'fa-pulse');
 
@@ -105,7 +113,6 @@ function appendMessage(sender, message) {
     messageElement.classList.add(sender);
     messageElement.innerText = message;
 
-    // add icons depending on who send message bot or user
     if (sender === 'user') {
         icon.classList.add('fa-regular', 'fa-user');
         iconElement.setAttribute('id', 'user-icon');
@@ -119,5 +126,34 @@ function appendMessage(sender, message) {
     chatElement.appendChild(messageElement);
     chatLog.appendChild(chatElement);
     chatLog.scrollTo = chatLog.scrollHeight;
+}
 
+function handleFileUpload(event) {
+    const uploadedFile = event.target.files[0];
+    const fileReader = new FileReader();
+
+    fileReader.onload = function (e) {
+        const srcId = Object.keys(srcIdsData).length + 1;
+        const optionText = 'Your Current Plan';
+
+        // To be implemented to get the actual src_id
+        srcIdsData[srcId] = 'your_generated_src_id'; 
+
+        addOptionToDropdown(srcId, optionText); 
+
+        console.log('Custom Source ID:', srcId);
+
+        console.log('Uploaded File:', uploadedFile);
+    };
+
+    fileReader.readAsDataURL(uploadedFile);
+}
+
+function addOptionToDropdown(srcId, optionText) {
+    const newOption = document.createElement('option');
+    newOption.value = srcId;
+    newOption.text = optionText;
+    srcIdSelect.add(newOption);
+
+    srcIdSelect.value = srcId;
 }
