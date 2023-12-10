@@ -226,7 +226,6 @@ label {
 }
 .upload-style:hover {
     cursor: pointer;
-    text-decoration: underline;
     font-weight: bold;
     transform: scale(1.3);
 }
