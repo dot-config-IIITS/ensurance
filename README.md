@@ -6,9 +6,9 @@ Ensurance is a cutting-edge AI-powered health insurance assistant 🤖 created f
 
 ## Demo 📽️
 
-You can watch the demo on [youtube](https://youtu.be/mT6nQ1KZXyM?si=OamcRIvHKclMN619), or through the embed below:
+You can watch the demo on [youtube](https://youtu.be/GzCMVNCS_24), or through the embed below:
 
-[![Demo Video](https://img.youtube.com/vi/mT6nQ1KZXyM/0.jpg)](https://www.youtube.com/watch?v=mT6nQ1KZXyM)
+[![Demo Video](https://img.youtube.com/vi/GzCMVNCS_24/0.jpg)](https://youtu.be/GzCMVNCS_24)
 
 
 ## Key Features 🔑
