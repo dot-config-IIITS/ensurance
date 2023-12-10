@@ -74,7 +74,7 @@ async function sendMessage() {
             const response = await fetch('https://api.chatpdf.com/v1/chats/message', {
                 method: 'POST',
                 headers: {
-                    'x-api-key': 'sec_b0bihQqZZ6GG1SBBhFyX3DzYNDcqX3ST',
+                    'x-api-key': config.API,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
@@ -145,7 +145,7 @@ function handleFileUpload(event) {
                 const response = await fetch('https://api.chatpdf.com/v1/sources/add-file', {
                     method: 'POST',
                     headers: {
-                        'x-api-key': 'sec_b0bihQqZZ6GG1SBBhFyX3DzYNDcqX3ST',
+                        'x-api-key': config.API,
                     },
                     body: formData,
                 });
