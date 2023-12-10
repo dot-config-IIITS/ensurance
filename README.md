@@ -4,6 +4,13 @@
 
 Ensurance is a cutting-edge AI-powered health insurance assistant 🤖 created for the National Healthcare Hackathon 2023. It's designed to demystify health insurance policies, streamline the comparison of plans, and enhance customer support experiences. 🛠️
 
+## Demo 📽️
+
+You can watch the demo on [youtube](https://youtu.be/mT6nQ1KZXyM?si=OamcRIvHKclMN619), or through the embed below:
+
+[![Demo Video](https://img.youtube.com/vi/mT6nQ1KZXyM/0.jpg)](https://www.youtube.com/watch?v=mT6nQ1KZXyM)
+
+
 ## Key Features 🔑
 
 - **AI Bot** 🤖: Simplifies understanding complex health insurance policies.
